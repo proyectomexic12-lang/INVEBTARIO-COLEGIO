@@ -1,0 +1,30 @@
+Analicé detenidamente el código fuente de tu aplicación (la lógica en [`database.py`](file:///c:/Users/USUARIO/Desktop/inventario/desktop_app/database.py), el flujo en [`main.py`](file:///c:/Users/USUARIO/Desktop/inventario/desktop_app/main.py) y las vistas en `components/`). 
+
+Aquí tienes un catálogo de **20 mejoras de alta fidelidad** para hermosear el diseño visual, optimizar el rendimiento y agregar funciones premium al sistema:
+
+---
+
+### 🎨 Diseño Visual y Experiencia de Usuario (UX)
+
+1. **Gráficos Estadísticos Dinámicos**: En el Panel Maestro ([`dashboard.py`](file:///c:/Users/USUARIO/Desktop/inventario/desktop_app/components/dashboard.py#L125-L140)), sustituir las barras de progreso estáticas por gráficos dinámicos integrando **Matplotlib** en Tkinter, mostrando la curva real de depreciación patrimonial a 5 años.
+2. **Refactorización de Paleta HSL**: Definir variables de colores HSL consistentes en lugar de códigos hexadecimales sueltos en el código, permitiendo cambiar dinámicamente la estética de la app (ej: Tema *Slate Blue*, *Emerald Green* o *Midnight Black*).
+3. **Indicador Visual de Estado de Bienes**: En el listado por salones ([`dependencies.py`](file:///c:/Users/USUARIO/Desktop/inventario/desktop_app/components/dependencies.py#L285-L359)), añadir indicadores de color (tipo semáforo) que muestren a primera vista el porcentaje de bienes en estado Bueno (Verde), Regular (Amarillo) o Malo (Rojo).
+4. **Popup de Notificación de Préstamos Vencidos**: Al abrir la aplicación, si la base de datos detecta que un docente tiene activos fuera de la fecha límite de devolución, mostrar una alerta flotante en color carmesí destacada en el dashboard.
+5. **Autocompletado de Responsables**: En el formulario de préstamos ([`loans.py`](file:///c:/Users/USUARIO/Desktop/inventario/desktop_app/components/loans.py#L44-L46)), añadir sugerencias de nombres que se autocompleten dinámicamente a partir de la lista de funcionarios registrados en la base de datos para evitar errores tipográfico
+<truncated 2562 bytes>
+ormulario de asignación ([`loans.py`](file:///c:/Users/USUARIO/Desktop/inventario/desktop_app/components/loans.py#L157-L172)), validar automáticamente que la cantidad de unidades solicitadas en préstamo no supere las existencias físicas activas disponibles en el aula de origen.
+15. **Seguridad y Validación de Campos en Formularios**: Añadir validación estricta en las entradas (ej: verificar que el NIT tenga formato válido, que los valores unitarios no sean negativos y que las fechas respeten el formato AAAA-MM-DD) antes de enviarlos a la base de datos SQLite.
+16. **Filtros Avanzados en Explorador Global**: Añadir controles interactivos en la parte superior del explorador de inventario para filtrar la lista instantáneamente por categoría contable, dependencia o rango de precios.
+17. **Selector de Sede Global**: Dado que la base de datos almacena el campo `SEDE`, añadir un selector global en el sidebar para alternar entre diferentes sedes de la institución (ej: Guaimaral principal vs. Sedes satélites), filtrando la data de todas las pantallas simultáneamente.
+
+---
+
+### 🛡️ Mantenimiento y Sistema
+
+18. **Copia de Seguridad Automática (Backup)**: Crear una rutina al iniciar la aplicación que copie de forma silenciosa el archivo `inventory.db` en una carpeta llamada `/backups` para prevenir pérdida de datos por fallos de energía.
+19. **Registro Rápido con Escáner de Código de Barras**: Configurar la aplicación para que al detectar una entrada rápida de caracteres seguida de un retorno de carro (acción típica de un lector de códigos de barra USB) busque el activo directamente o complete el registro del préstamo de forma automática.
+20. **Visualizador de Auditoría Integrado**: Crear una ventana o pestaña para explorar la tabla `audit_log`, permitiendo al rector o administrador ver exactamente quién, cuándo y qué campo se modificó en cada activo del inventario.
+
+---
+
+¿Cuál de estas mejoras te llama más la atención para que empecemos a implementarla y hermoseemos tu código? 🚀

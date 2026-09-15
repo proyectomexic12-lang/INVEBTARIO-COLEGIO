@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Caches
+.mplcache/
+.pytest_cache/
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# PyInstaller / Build outputs
+build/
+dist/
+*.spec.bak
+Instalar_Control_Inventario.exe
+*.exe
+payload.zip
+
+# Database and local data
+*.db
+*.db.bak
+*.sqlite3
+*.db-journal
+backups/
+
+# Logs
+*.log
+
+# Editor and IDE configurations
+.vscode/
+.obsidian/
+.idea/
+
+# Scratch & temporary files
+scratch/

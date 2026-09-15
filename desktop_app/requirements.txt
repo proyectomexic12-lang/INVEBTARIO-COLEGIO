@@ -1,0 +1,6 @@
+customtkinter
+pillow
+darkdetect
+openpyxl
+matplotlib
+fpdf2
