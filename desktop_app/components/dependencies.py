@@ -99,7 +99,8 @@ class ModernDependencies(ctk.CTkFrame):
         sede = getattr(self.controller, "global_sede", "Todas")
         all_stats = self.asset_repo.get_all_dep_stats(sede=sede)
         breakdown = self.asset_repo.get_dep_states_breakdown(sede=sede)
-        deps_names = self.dep_repo.get_dependencies(sede=sede)
+        raw_deps = self.dep_repo.get_dependencies(sede=sede)
+        deps_names = [d for d in raw_deps if str(d).strip().upper() not in ('SIN ASIGNAR', 'GENERAL', 'SIN DEPENDENCIAS', 'NONE', 'NULL', '')]
         deps_data = []
         gv, gu = 0.0, 0
         for d in deps_names:

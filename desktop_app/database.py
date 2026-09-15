@@ -227,8 +227,8 @@ class DatabaseManager:
 
         try:
             self.cursor.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_dependencies_name_sede ON dependencies(name, sede)")
-            # Clean up unwanted default dependencies like 'GENERAL'
-            self.cursor.execute("DELETE FROM dependencies WHERE UPPER(TRIM(name)) = 'GENERAL'")
+            # Clean up unwanted default dependencies like 'GENERAL' or 'SIN ASIGNAR'
+            self.cursor.execute("DELETE FROM dependencies WHERE UPPER(TRIM(name)) IN ('GENERAL', 'SIN ASIGNAR', 'SIN DEPENDENCIAS')")
             self.cursor.execute("UPDATE assets SET UBICACION = 'SIN ASIGNAR' WHERE UPPER(TRIM(UBICACION)) = 'GENERAL'")
             self.conn.commit()
         except Exception:
@@ -618,20 +618,24 @@ class DependencyRepository:
             clean_s = str(sede).strip()
             self.db_manager.cursor.execute("""
                 SELECT name FROM dependencies 
-                WHERE LOWER(sede) = LOWER(?) AND UPPER(TRIM(name)) != 'GENERAL'
+                WHERE LOWER(sede) = LOWER(?) 
+                  AND UPPER(TRIM(name)) NOT IN ('GENERAL', 'SIN ASIGNAR', 'SIN DEPENDENCIAS', 'NONE', 'NULL', '')
                 UNION
                 SELECT DISTINCT UBICACION FROM assets 
-                WHERE LOWER(SEDE) = LOWER(?) AND UBICACION IS NOT NULL AND UBICACION != '' AND UPPER(TRIM(UBICACION)) != 'GENERAL'
+                WHERE LOWER(SEDE) = LOWER(?) 
+                  AND UBICACION IS NOT NULL AND UBICACION != '' 
+                  AND UPPER(TRIM(UBICACION)) NOT IN ('GENERAL', 'SIN ASIGNAR', 'SIN DEPENDENCIAS', 'NONE', 'NULL', '')
                 ORDER BY 1
             """, (clean_s, clean_s))
             return [r[0] for r in self.db_manager.cursor.fetchall()]
         else:
             self.db_manager.cursor.execute("""
                 SELECT name FROM dependencies 
-                WHERE UPPER(TRIM(name)) != 'GENERAL'
+                WHERE UPPER(TRIM(name)) NOT IN ('GENERAL', 'SIN ASIGNAR', 'SIN DEPENDENCIAS', 'NONE', 'NULL', '')
                 UNION
                 SELECT DISTINCT UBICACION FROM assets 
-                WHERE UBICACION IS NOT NULL AND UBICACION != '' AND UPPER(TRIM(UBICACION)) != 'GENERAL'
+                WHERE UBICACION IS NOT NULL AND UBICACION != '' 
+                  AND UPPER(TRIM(UBICACION)) NOT IN ('GENERAL', 'SIN ASIGNAR', 'SIN DEPENDENCIAS', 'NONE', 'NULL', '')
                 ORDER BY 1
             """)
             return [r[0] for r in self.db_manager.cursor.fetchall()]
