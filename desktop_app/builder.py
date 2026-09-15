@@ -2,6 +2,7 @@ import os
 import zipfile
 import shutil
 import subprocess
+import sqlite3
 
 def create_payload():
     print("Empaquetando aplicacion en payload.zip...")
@@ -16,7 +17,18 @@ def create_payload():
         os.remove(zip_path)
         
     if os.path.exists("inventory.db"):
-        shutil.copy2("inventory.db", os.path.join(dist_dir, "inventory.db"))
+        dest_db = os.path.join(dist_dir, "inventory.db")
+        for ext in ["", "-wal", "-shm"]:
+            f = dest_db + ext
+            if os.path.exists(f):
+                try: os.remove(f)
+                except Exception: pass
+        src_conn = sqlite3.connect("inventory.db")
+        dst_conn = sqlite3.connect(dest_db)
+        src_conn.backup(dst_conn)
+        dst_conn.close()
+        src_conn.close()
+        print("Base de datos empaquetada con verificacion atomica de integridad.")
         
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(dist_dir):

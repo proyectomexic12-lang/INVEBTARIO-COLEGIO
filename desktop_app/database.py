@@ -178,6 +178,19 @@ class DatabaseManager:
         self.cursor.execute("PRAGMA temp_store=MEMORY")
         self.cursor.execute("PRAGMA count_changes=OFF")
         self.conn.commit()
+
+        # Integrity quick check and self-healing for corrupted indexes
+        try:
+            self.cursor.execute("PRAGMA quick_check")
+            chk = self.cursor.fetchone()
+            chk_val = chk.get('quick_check') if isinstance(chk, dict) else (chk[0] if chk else 'ok')
+            if chk_val and str(chk_val).lower() != 'ok':
+                print(f"[DB] Inconsistencia de índices detectada ({chk_val}). Reparando con REINDEX...")
+                self.cursor.execute("REINDEX")
+                self.conn.commit()
+        except Exception as e:
+            print(f"[DB] Aviso en verificación de integridad: {e}")
+
         self.create_tables()
         self._run_migrations()
 
